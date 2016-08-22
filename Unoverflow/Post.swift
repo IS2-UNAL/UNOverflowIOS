@@ -15,35 +15,13 @@ class Post{
     var description:String
     var cretedAt:String
     var updatedAt:String
-    var comments:[Comment]
-    var imagesUI:[UIImage?] = []
-    var images:[String]?{
-        didSet{
-            imagesUI = []
-            for url in images!{
-                let URL = NSURL(string: url)
-                let request = NSURLRequest(URL: URL!)
-                let session = NSURLSession.sharedSession()
-                let task = session.dataTaskWithRequest(request, completionHandler: {data,response,error -> Void in
-                    if let httpResponse = response as? NSHTTPURLResponse{
-                        if httpResponse.statusCode == 200 {
-                            self.imagesUI.append(UIImage(data: data!))
-                        }
-                    }
-                })
-                task.resume()
-                
-            }
-        }
-    }
     var owner:Int
-    init(id:Int,title:String,description:String,createdAt:String,updatedAt:String,comments:[Comment],owner:Int){
+    init(id:Int,title:String,description:String,createdAt:String,updatedAt:String,owner:Int){
         self.id = id
         self.title = title
         self.description = description
         self.cretedAt = createdAt
         self.updatedAt = updatedAt
-        self.comments = comments
         self.owner = owner
     }
 }

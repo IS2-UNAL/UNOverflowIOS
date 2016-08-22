@@ -253,22 +253,63 @@
             </objects>
             <point key="canvasLocation" x="4225" y="343"/>
         </scene>
-        <!--Table View Controller-->
+        <!--My Comments Table View Controller-->
         <scene sceneID="z23-gR-3Eq">
             <objects>
-                <tableViewController id="4OD-Ap-RAq" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="myComments" id="4OD-Ap-RAq" customClass="MyCommentsTableViewController" customModule="Unoverflow" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ziE-53-qdB">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="9hn-08-IH8">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="comment" rowHeight="120" id="9hn-08-IH8" customClass="CommentTableViewCell" customModule="Unoverflow" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="600" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9hn-08-IH8" id="Rag-f1-t9s">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="119.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vdU-Jd-GBh">
+                                            <rect key="frame" x="8" y="42" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fb4-Ra-xTx">
+                                            <rect key="frame" x="8" y="78" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQx-UU-pYq">
+                                            <rect key="frame" x="8" y="13" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="vdU-Jd-GBh" secondAttribute="trailing" constant="10" id="3u6-kt-5OO"/>
+                                        <constraint firstItem="vdU-Jd-GBh" firstAttribute="top" secondItem="RQx-UU-pYq" secondAttribute="bottom" constant="10" id="5u3-Bd-JEO"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="RQx-UU-pYq" secondAttribute="trailing" constant="10" id="6w6-eF-ctv"/>
+                                        <constraint firstItem="RQx-UU-pYq" firstAttribute="leading" secondItem="Rag-f1-t9s" secondAttribute="leadingMargin" constant="10" id="7DE-wj-dlG"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="fb4-Ra-xTx" secondAttribute="trailing" constant="10" id="7sx-cG-zfD"/>
+                                        <constraint firstItem="fb4-Ra-xTx" firstAttribute="top" secondItem="vdU-Jd-GBh" secondAttribute="bottom" constant="10" id="L7J-d1-DoA"/>
+                                        <constraint firstItem="fb4-Ra-xTx" firstAttribute="leading" secondItem="Rag-f1-t9s" secondAttribute="leadingMargin" constant="10" id="NcO-hg-87V"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="RQx-UU-pYq" secondAttribute="bottom" constant="10" id="W4H-zo-yJq"/>
+                                        <constraint firstItem="vdU-Jd-GBh" firstAttribute="top" secondItem="RQx-UU-pYq" secondAttribute="bottom" constant="10" id="XJp-7t-ZPf"/>
+                                        <constraint firstItem="RQx-UU-pYq" firstAttribute="top" secondItem="Rag-f1-t9s" secondAttribute="topMargin" constant="10" id="edt-z9-h0f"/>
+                                        <constraint firstItem="fb4-Ra-xTx" firstAttribute="top" secondItem="vdU-Jd-GBh" secondAttribute="bottom" constant="10" id="hd4-cf-yNC"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="vdU-Jd-GBh" secondAttribute="bottom" constant="10" id="hmq-fT-jzd"/>
+                                        <constraint firstItem="vdU-Jd-GBh" firstAttribute="leading" secondItem="Rag-f1-t9s" secondAttribute="leadingMargin" constant="10" id="kgI-ni-stS"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="fb4-Ra-xTx" secondAttribute="bottom" constant="10" id="v9P-du-icT"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="answerText" destination="RQx-UU-pYq" id="HBl-ch-35U"/>
+                                    <outlet property="created" destination="vdU-Jd-GBh" id="ZPL-KU-czR"/>
+                                    <outlet property="updated" destination="fb4-Ra-xTx" id="RmJ-Bm-Gdg"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

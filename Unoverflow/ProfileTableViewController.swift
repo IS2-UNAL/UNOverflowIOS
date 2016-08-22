@@ -84,6 +84,13 @@ class ProfileTableViewController: UITableViewController {
             }
             
         }
+        if indexPath.row == 4 {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myComments") as! MyCommentsTableViewController
+            if let user = Utilities.user {
+                viewController.myComments = user.comments
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        }
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
