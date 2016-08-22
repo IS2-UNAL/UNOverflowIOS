@@ -22,6 +22,8 @@ class ProfileTableViewController: UITableViewController,UIViewControllerPreviewi
         }else{
             self.dismissViewControllerAnimated(true, completion: nil)
         }
+        tableView.reloadData()
+
         if traitCollection.forceTouchCapability == .Available{
             registerForPreviewingWithDelegate(self, sourceView: view)
         }

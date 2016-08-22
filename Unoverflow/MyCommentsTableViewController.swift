@@ -22,7 +22,40 @@ class MyCommentsTableViewController: UITableViewController,UISearchResultsUpdati
         tableView.tableHeaderView = searchController.searchBar
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
+        self.refreshControl?.addTarget(self, action: "handleRefresh", forControlEvents: .ValueChanged)
+
     }
+    func handleRefresh(){
+        let URL = "http://unoverflow.herokuapp.com/api/v1/users/reloadUser"
+        let request = NSMutableURLRequest(URL: NSURL(string: URL)!,cachePolicy: .UseProtocolCachePolicy,timeoutInterval: 10.0)
+        let session = NSURLSession.sharedSession()
+        request.HTTPMethod = "POST"
+        if let user = Utilities.user{
+            let params = ["api_token":user.authToken]
+            request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(params, options: .PrettyPrinted)
+            request.addValue("application/json", forHTTPHeaderField: "Content-type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            let task = session.dataTaskWithRequest(request, completionHandler: {data,response,error -> Void in
+                if let httpResponse = response as? NSHTTPURLResponse{
+                    if httpResponse.statusCode == 200{
+                        let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+                        NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                            let user = Utilities.parseJSONToUser(json)
+                            Utilities.user = user
+                            self.myComments =  (user?.comments)!
+                            self.tableView.reloadData()
+                            self.refreshControl?.endRefreshing()
+                        })
+                        
+                    }
+                }
+            })
+            task.resume()
+        }
+        
+        
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -86,6 +119,7 @@ class MyCommentsTableViewController: UITableViewController,UISearchResultsUpdati
                             NSOperationQueue.mainQueue().addOperationWithBlock({()-> Void in
                                 self.myComments.removeAtIndex(indexPath.row)
                                 self.tableView.reloadData()
+                                self.handleRefresh()
                                 self.presentViewController(Utilities.alertMessage("Success", message: "The comment was deleted"), animated: true, completion: nil)
                             })
                         }else{
