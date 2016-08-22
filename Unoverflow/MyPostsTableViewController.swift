@@ -9,14 +9,19 @@
 import UIKit
 import SafariServices
 
-class MyPostsTableViewController: UITableViewController {
+class MyPostsTableViewController: UITableViewController,UISearchResultsUpdating {
     var posts:[Post] = []
+    var postsSearch:[Post] = []
+    var searchController:UISearchController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        searchController = UISearchController(searchResultsController: nil)
+        tableView.tableHeaderView = searchController.searchBar
         tableView.estimatedRowHeight = 150.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,18 +34,26 @@ class MyPostsTableViewController: UITableViewController {
    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if searchController.active{
+            return postsSearch.count
+        }
         return posts.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("post", forIndexPath: indexPath) as! PostTableViewCell
-
-        let post = posts[indexPath.row]
-        cell.titleText.text = post.title
-        cell.descriptionText.text = post.description.html2String
-        cell.created.text = "Created: " + post.cretedAt
-        cell.updated.text = "Updated: " + post.updatedAt
+        var post:Post?
+        if searchController.active{
+            post = postsSearch[indexPath.row]
+        }else{
+            post = posts[indexPath.row]
+        }
+        
+        cell.titleText.text = post!.title
+        cell.descriptionText.text = post!.description.html2String
+        cell.created.text = "Created: " + post!.cretedAt
+        cell.updated.text = "Updated: " + post!.updatedAt
         return cell
     }
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
@@ -67,7 +80,7 @@ class MyPostsTableViewController: UITableViewController {
                         if httpResponse.statusCode == 204{
                             NSOperationQueue.mainQueue().addOperationWithBlock({()-> Void in
                                 self.posts.removeAtIndex(indexPath.row)
-                                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+                                self.tableView.reloadData()
                                 self.presentViewController(Utilities.alertMessage("Success", message: "The post was deleted"), animated: true, completion: nil)
                             })
                         }else{
@@ -91,7 +104,25 @@ class MyPostsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
-    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            filterContentForSearchText(searchText)
+            tableView.reloadData()
+        }
+    }
+    func filterContentForSearchText(searchText:String){
+        postsSearch = posts.filter({(p:Post) -> Bool in
+            let titleMatch = p.title.rangeOfString(searchText,options: NSStringCompareOptions.CaseInsensitiveSearch)
+            return titleMatch != nil
+        })
+    }
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if searchController.active {
+            return false
+        } else {
+            return true
+        }
+    }
 }
 extension String{
     var html2AttributedString:NSAttributedString? {

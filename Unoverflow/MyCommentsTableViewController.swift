@@ -10,13 +10,18 @@ import UIKit
 import SafariServices
 
 
-class MyCommentsTableViewController: UITableViewController {
+class MyCommentsTableViewController: UITableViewController,UISearchResultsUpdating {
     var myComments:[Comment] = []
+    var myCommentsSearch:[Comment] = []
+    var searchController:UISearchController!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        searchController = UISearchController(searchResultsController: nil)
         tableView.estimatedRowHeight = 120.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,16 +35,24 @@ class MyCommentsTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if searchController.active{
+            return myCommentsSearch.count
+        }
         return myComments.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("comment", forIndexPath: indexPath) as! CommentTableViewCell
-        let comment =  myComments[indexPath.row]
-        cell.answerText.text = comment.answer.html2String
-        cell.created.text = "Created: " + String(comment.createdAt)
-        cell.updated.text = "Updated: " + String(comment.updatedAt)
+        var comment:Comment?
+        if searchController.active{
+            comment = myCommentsSearch[indexPath.row]
+        }else{
+            comment = myComments[indexPath.row]
+        }
+        cell.answerText.text = comment!.answer.html2String
+        cell.created.text = "Created: " + String(comment!.createdAt)
+        cell.updated.text = "Updated: " + String(comment!.updatedAt)
 
         return cell
     }
@@ -72,7 +85,7 @@ class MyCommentsTableViewController: UITableViewController {
                         if httpResponse.statusCode == 204{
                             NSOperationQueue.mainQueue().addOperationWithBlock({()-> Void in
                                 self.myComments.removeAtIndex(indexPath.row)
-                                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+                                self.tableView.reloadData()
                                 self.presentViewController(Utilities.alertMessage("Success", message: "The comment was deleted"), animated: true, completion: nil)
                             })
                         }else{
@@ -93,7 +106,25 @@ class MyCommentsTableViewController: UITableViewController {
         viewPost.backgroundColor = UIColor.blueColor()
         return [viewPost,deletePost]
     }
-
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if searchController.active {
+            return false
+        } else {
+            return true
+        }
+    }
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text{
+            filterContentForSearchText(searchText)
+            tableView.reloadData()
+        }
+    }
+    func filterContentForSearchText(searchText:String){
+        myCommentsSearch = myComments.filter({(c:Comment) -> Bool in
+            let answerMatch = c.answer.rangeOfString(searchText,options: .CaseInsensitiveSearch)
+            return answerMatch != nil
+        })
+    }
 
     
 

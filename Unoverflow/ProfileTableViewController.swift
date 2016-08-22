@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileTableViewController: UITableViewController {
+class ProfileTableViewController: UITableViewController,UIViewControllerPreviewingDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +21,9 @@ class ProfileTableViewController: UITableViewController {
             
         }else{
             self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        if traitCollection.forceTouchCapability == .Available{
+            registerForPreviewingWithDelegate(self, sourceView: view)
         }
     }
     override func didReceiveMemoryWarning() {
@@ -107,49 +110,41 @@ class ProfileTableViewController: UITableViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRowAtPoint(location) else{
+            return nil
+        }
+        if indexPath.row < 3{
+            return nil
+        }
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else{
+            return nil
+        }
+        switch indexPath.row {
+        case 3:
+            let viewController =  UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myPosts") as! MyPostsTableViewController
+            if let user = Utilities.user {
+                viewController.posts = user.posts
+            }
+            viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+            
+            previewingContext.sourceRect = cell.frame
+            return viewController
+        default:
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myComments") as! MyCommentsTableViewController
+            if let user = Utilities.user {
+                viewController.myComments = user.comments
+                viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+                
+                previewingContext.sourceRect = cell.frame
+                return viewController
+            }
+
+        }
+        return nil
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
 
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
