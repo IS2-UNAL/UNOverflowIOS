@@ -17,10 +17,10 @@ class Post{
     var updatedAt:String
     var comments:[Comment]
     var imagesUI:[UIImage?] = []
-    var images:[String]{
+    var images:[String]?{
         didSet{
             imagesUI = []
-            for url in images{
+            for url in images!{
                 let URL = NSURL(string: url)
                 let request = NSURLRequest(URL: URL!)
                 let session = NSURLSession.sharedSession()

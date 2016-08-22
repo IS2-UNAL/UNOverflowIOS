@@ -76,6 +76,14 @@ class ProfileTableViewController: UITableViewController {
 
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 3 {
+            let viewController =  UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myPosts") as! MyPostsTableViewController
+            if let user = Utilities.user {
+                viewController.posts = user.posts
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+            
+        }
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
