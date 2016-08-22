@@ -38,15 +38,8 @@ class Utilities{
             let _createdAt = comment["created_at"] as! String
             let _updatedAt = comment["updated_at"] as! String
             let _ownerComment = comment["user_id"] as! Int
-            let imagesComment = comment["images"] as! [AnyObject]
-            var _imagesComment:[String] = []
-            for img in imagesComment{
-                let imgJSON = img["image"] as! NSDictionary
-                let imgURL = imgJSON["url"] as! String
-                _imagesComment.append(imgURL)
-            }
-            let commentTemp = Comment(id: _idComment, answer: _answer, createdAt: _createdAt, updatedAt: _updatedAt, owner: _ownerComment)
-            commentTemp.images = _imagesComment
+            let _postIdComment = comment["post_id"] as! Int
+            let commentTemp = Comment(id: _idComment, answer: _answer, createdAt: _createdAt, updatedAt: _updatedAt, owner: _ownerComment,postId: _postIdComment)
             _comments.append(commentTemp)
             
         }
@@ -59,35 +52,8 @@ class Utilities{
             let _createdAtPost = post["created_at"] as! String
             let _updatedAtPost = post["updated_at"] as! String
             let _ownerPost = post["user_id"] as! Int
-            var _commentPost:[Comment] = []
-            let commentsPostJSON = post["comments"] as! [AnyObject]
-            for c in commentsPostJSON{
-                let _idCommentPost = c["id"] as! Int
-                let _answerPost = c["answer"] as! String
-                let _createdAtPostComment = c["created_at"] as! String
-                let _updatedAtPostComment = c["updated_at"] as! String
-                let _ownerPostComment = c["user_id"] as! Int
-                let imagesPostComment = c["images"] as! [AnyObject]
-                var _imagesPostComment:[String] = []
-                for img in imagesPostComment{
-                    let imgJSON = img["image"] as! NSDictionary
-                    let imgURL = imgJSON["url"] as! String
-                    _imagesPostComment.append(imgURL)
-                }
-                let commentTemp = Comment(id: _idCommentPost, answer: _answerPost, createdAt: _createdAtPostComment, updatedAt: _updatedAtPostComment,  owner: _ownerPostComment)
-                commentTemp.images = _imagesPostComment
-                _commentPost.append(commentTemp)
-                
-            }
-            var _imagesPost:[String] = []
-            let imagesPostJSON = post["images"] as! [AnyObject]
-            for img in imagesPostJSON{
-                let imgJSON = img["image"] as! NSDictionary
-                let imgURL = imgJSON["url"] as! String
-                _imagesPost.append(imgURL)
-            }
-            let postTemp = Post(id: _idPost, title: _title, description: _description, createdAt: _createdAtPost, updatedAt: _updatedAtPost, comments: _commentPost, owner: _ownerPost)
-            postTemp.images = _imagesPost
+            
+            let postTemp = Post(id: _idPost, title: _title, description: _description, createdAt: _createdAtPost, updatedAt: _updatedAtPost, owner: _ownerPost)
             _posts.append(postTemp)
         }
         let userTemp = User(id: _id, email: _email, username: _username,  name: _name, authToken: _authToken, role: _role, comments: _comments, posts: _posts)
