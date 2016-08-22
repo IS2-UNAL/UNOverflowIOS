@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class Utilities{
+    static var user:User?
     static func alertMessage(title:String,message:String) -> UIAlertController{
         let alertMessage = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
@@ -44,7 +45,8 @@ class Utilities{
                 let imgURL = imgJSON["url"] as! String
                 _imagesComment.append(imgURL)
             }
-            let commentTemp = Comment(id: _idComment, answer: _answer, createdAt: _createdAt, updatedAt: _updatedAt, images: _imagesComment, owner: _ownerComment)
+            let commentTemp = Comment(id: _idComment, answer: _answer, createdAt: _createdAt, updatedAt: _updatedAt, owner: _ownerComment)
+            commentTemp.images = _imagesComment
             _comments.append(commentTemp)
             
         }
@@ -72,7 +74,8 @@ class Utilities{
                     let imgURL = imgJSON["url"] as! String
                     _imagesPostComment.append(imgURL)
                 }
-                let commentTemp = Comment(id: _idCommentPost, answer: _answerPost, createdAt: _createdAtPostComment, updatedAt: _updatedAtPostComment, images: _imagesPostComment, owner: _ownerPostComment)
+                let commentTemp = Comment(id: _idCommentPost, answer: _answerPost, createdAt: _createdAtPostComment, updatedAt: _updatedAtPostComment,  owner: _ownerPostComment)
+                commentTemp.images = _imagesPostComment
                 _commentPost.append(commentTemp)
                 
             }
@@ -83,10 +86,12 @@ class Utilities{
                 let imgURL = imgJSON["url"] as! String
                 _imagesPost.append(imgURL)
             }
-            let postTemp = Post(id: _idPost, title: _title, description: _description, createdAt: _createdAtPost, updatedAt: _updatedAtPost, comments: _commentPost, images: _imagesPost, owner: _ownerPost)
+            let postTemp = Post(id: _idPost, title: _title, description: _description, createdAt: _createdAtPost, updatedAt: _updatedAtPost, comments: _commentPost, owner: _ownerPost)
+            postTemp.images = _imagesPost
             _posts.append(postTemp)
         }
-        let userTemp = User(id: _id, email: _email, username: _username, avatar: _thumbURL, name: _name, authToken: _authToken, role: _role, comments: _comments, posts: _posts)
+        let userTemp = User(id: _id, email: _email, username: _username,  name: _name, authToken: _authToken, role: _role, comments: _comments, posts: _posts)
+        userTemp.avatar = _thumbURL
         return userTemp
         
     }

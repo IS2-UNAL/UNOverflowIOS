@@ -18,6 +18,8 @@
 		B53688CD1D6AB87C009F4C98 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688CC1D6AB87C009F4C98 /* Tag.swift */; };
 		B53688CF1D6AB891009F4C98 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688CE1D6AB891009F4C98 /* Post.swift */; };
 		B53688D11D6AB8A7009F4C98 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688D01D6AB8A7009F4C98 /* Comment.swift */; };
+		B53688D31D6B5C31009F4C98 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688D21D6B5C31009F4C98 /* ProfileTableViewController.swift */; };
+		B53688D51D6B5DE8009F4C98 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688D41D6B5DE8009F4C98 /* ProfileTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		B53688CC1D6AB87C009F4C98 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		B53688CE1D6AB891009F4C98 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		B53688D01D6AB8A7009F4C98 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		B53688D21D6B5C31009F4C98 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		B53688D41D6B5DE8009F4C98 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 				B53688CC1D6AB87C009F4C98 /* Tag.swift */,
 				B53688CE1D6AB891009F4C98 /* Post.swift */,
 				B53688D01D6AB8A7009F4C98 /* Comment.swift */,
+				B53688D21D6B5C31009F4C98 /* ProfileTableViewController.swift */,
+				B53688D41D6B5DE8009F4C98 /* ProfileTableViewCell.swift */,
 			);
 			path = Unoverflow;
 			sourceTree = "<group>";
@@ -217,9 +223,11 @@
 				B53688CA1D6AB85F009F4C98 /* User.swift in Sources */,
 				B53688C81D6AAE70009F4C98 /* Utilities.swift in Sources */,
 				B53688CD1D6AB87C009F4C98 /* Tag.swift in Sources */,
+				B53688D51D6B5DE8009F4C98 /* ProfileTableViewCell.swift in Sources */,
 				B53688D11D6AB8A7009F4C98 /* Comment.swift in Sources */,
 				B53688CF1D6AB891009F4C98 /* Post.swift in Sources */,
 				B53688AA1D6AA5A7009F4C98 /* ViewController.swift in Sources */,
+				B53688D31D6B5C31009F4C98 /* ProfileTableViewController.swift in Sources */,
 				B53688A81D6AA5A7009F4C98 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

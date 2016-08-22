@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class ViewController: UIViewController {
 
@@ -18,16 +19,27 @@ class ViewController: UIViewController {
         emailText.placeholder = "Enter your email"
         passwordText.placeholder = "Enter your password"
         passwordText.secureTextEntry = true
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        emailText.text = ""
+        passwordText.text = ""
+        
+    }
+   
 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     @IBAction func signUp(sender: AnyObject) {
-        
+        let url = NSURL(string: "https://unoverflow.herokuapp.com/sign_up")
+        let safariController = SFSafariViewController(URL: url!)
+        presentViewController(safariController, animated: true, completion: nil)
     }
 
     @IBAction func logIn(sender: AnyObject) {
@@ -49,9 +61,14 @@ class ViewController: UIViewController {
                 if let httpResponse = response as? NSHTTPURLResponse {
                     let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
                     if httpResponse.statusCode == 200 {
+                        NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                            let user = Utilities.parseJSONToUser(json)
+                            Utilities.user =  user
+                            
+                            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("profile")
+                            self.presentViewController(viewController, animated: true, completion: nil)
+                        })
                         
-                        let user = Utilities.parseJSONToUser(json)
-                        print(user?.email)
                         
                     }else{
                         let message = json["errors"] as! String

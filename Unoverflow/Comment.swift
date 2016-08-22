@@ -34,12 +34,11 @@ class Comment{
     }
     var imagesUI:[UIImage?] = []
     var owner:Int
-    init(id:Int,answer:String,createdAt:String,updatedAt:String,images:[String],owner:Int){
+    init(id:Int,answer:String,createdAt:String,updatedAt:String,owner:Int){
         self.id = id
         self.answer = answer
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.images = images
         self.owner = owner
     }
 }

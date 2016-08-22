@@ -37,14 +37,13 @@ class Post{
         }
     }
     var owner:Int
-    init(id:Int,title:String,description:String,createdAt:String,updatedAt:String,comments:[Comment],images:[String],owner:Int){
+    init(id:Int,title:String,description:String,createdAt:String,updatedAt:String,comments:[Comment],owner:Int){
         self.id = id
         self.title = title
         self.description = description
         self.cretedAt = createdAt
         self.updatedAt = updatedAt
         self.comments = comments
-        self.images = images
         self.owner = owner
     }
 }
