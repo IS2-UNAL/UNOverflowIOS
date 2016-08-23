@@ -10,13 +10,22 @@ import UIKit
 import SafariServices
 
 
-class TagsTableViewController: UITableViewController {
+class TagsTableViewController: UITableViewController,UISearchResultsUpdating {
     var tags:[Tag] = []
+    var tagsDictionary:[String:[Tag]] = [:]
+    var tagTitles:[String] = []
+    var tagsSearch:[Tag] = []
     var tasks:[NSURLSessionDataTask] = []
+    var searchController:UISearchController!
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchController =  UISearchController(searchResultsController: nil)
         tableView.estimatedRowHeight = 110.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        
         
     }
     override func viewWillAppear(animated: Bool) {
@@ -31,6 +40,8 @@ class TagsTableViewController: UITableViewController {
     }
     func getTags(){
         tags = []
+        tagsDictionary = [:]
+        tagTitles = []
         tableView.reloadData()
         getTagsFromUrl("https://unoverflow.herokuapp.com/api/v1/tags_api.json",page: 1)
     }
@@ -50,6 +61,7 @@ class TagsTableViewController: UITableViewController {
                         let tags = Utilities.parseJSONToTags(json)
                         self.tags.appendContentsOf(tags)
                         self.tableView.reloadData()
+                        self.createDictionary()
                     })
                     
                     let meta = json["meta"] as! NSDictionary
@@ -64,28 +76,99 @@ class TagsTableViewController: UITableViewController {
         tasks.append(task)
         task.resume()
     }
+    func createDictionary(){
+        tagsDictionary = [:]
+        for t in tags{
+            let key = t.title.substringToIndex(t.title.startIndex.advancedBy(1)).lowercaseString
+            if var tagsTemp = tagsDictionary[key]{
+                tagsTemp.append(t)
+                tagsDictionary[key] = tagsTemp
+            }else{
+                tagsDictionary[key] = [t]
+            }
+        }
+        tagTitles = [String](tagsDictionary.keys)
+        tagTitles = tagTitles.sort({ $0 < $1 })
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if searchController.active{
+            return 1
+        }
+        return tagTitles.count
+    }
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return tags.count
+        if searchController.active{
+            return tagsSearch.count
+        }else{
+            let key = tagTitles[section]
+            if let tags = tagsDictionary[key]{
+                return tags.count
+            }
+            return 0
+        }
+    }
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if searchController.active{
+            return nil
+        }
+        return tagTitles[section]
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("tags", forIndexPath: indexPath) as! TagTableViewCell
-        
-        let tag = tags[indexPath.row]
-        cell.titleText.text = tag.title
-        cell.descriptionText.text = tag.description.html2String
-        cell.postCountText.text = "This tag has \(tag.posts.count) posts"
+        if searchController.active{
+            let cell = tableView.dequeueReusableCellWithIdentifier("tags", forIndexPath: indexPath) as! TagTableViewCell
+            let tag = tagsSearch[indexPath.row]
+            cell.titleText.text = tag.title
+            cell.descriptionText.text = tag.description.html2String
+            cell.postCountText.text = "This tag has \(tag.posts.count) posts"
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCellWithIdentifier("tags", forIndexPath: indexPath) as! TagTableViewCell
+            let key = tagTitles[indexPath.section]
+            if let tags = tagsDictionary[key]{
+                let tag = tags[indexPath.row]
+                cell.titleText.text = tag.title
+                cell.descriptionText.text = tag.description.html2String
+                cell.postCountText.text = "This tag has \(tag.posts.count) posts"
+                
+                return cell
+            }
+            return cell
+        }
+    }
+    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+        if searchController.active{
+            return nil
+        }
+        return tagTitles
+    }
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let headerView = view as! UITableViewHeaderFooterView
+        headerView.textLabel?.font = UIFont(name: "Avenir", size: 25.0)
+    }
 
-        return cell
+    func updateSearchResultsForSearchController(searchController:UISearchController){
+        if let searchText = searchController.searchBar.text{
+            filterContentForSearchText(searchText)
+            tableView.reloadData()
+        }
+    }
+    func filterContentForSearchText(searchText:String){
+        tagsSearch = tags.filter({(t:Tag)-> Bool in
+            let titleMatch = t.title.rangeOfString(searchText,options: .CaseInsensitiveSearch)
+            return titleMatch != nil
+        })
     }
     
     @IBAction func addTag(sender: AnyObject) {
@@ -93,6 +176,28 @@ class TagsTableViewController: UITableViewController {
         let safariController = SFSafariViewController(URL: url!)
         presentViewController(safariController, animated: true, completion: nil)
     }
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let viewTag = UITableViewRowAction(style: .Default, title: "View", handler: {(action,indexPath) -> Void in
+            let key = self.tagTitles[indexPath.section]
+            if let tags = self.tagsDictionary[key]{
+                let tag =  tags[indexPath.row]
+                let url = "https://unoverflow.herokuapp.com/admin/tags/"+String(tag.id)
+                let URL = NSURL(string: url)
+                let safariController = SFSafariViewController(URL: URL!)
+                self.presentViewController(safariController, animated: true, completion: nil)
+            }
+        })
+        viewTag.backgroundColor = UIColor.blueColor()
+        return [viewTag]
+    }
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if searchController.active {
+            return false
+        } else {
+            return true
+        }
+    }
+    
 
     
 
