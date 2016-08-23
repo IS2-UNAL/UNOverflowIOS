@@ -9,7 +9,7 @@
 import UIKit
 import SafariServices
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UITextFieldDelegate {
 
     @IBOutlet weak var emailText: UITextField!
     
@@ -19,6 +19,8 @@ class ViewController: UIViewController {
         emailText.placeholder = "Enter your email"
         passwordText.placeholder = "Enter your password"
         passwordText.secureTextEntry = true
+        emailText.delegate = self
+        passwordText.delegate = self
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -83,6 +85,10 @@ class ViewController: UIViewController {
             
         }
         
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
 

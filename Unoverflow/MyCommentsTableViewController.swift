@@ -95,14 +95,14 @@ class MyCommentsTableViewController: UITableViewController,UISearchResultsUpdati
     
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let viewPost = UITableViewRowAction(style: .Default, title: "View", handler: {(action,indexPath) -> Void in
+        let viewComment = UITableViewRowAction(style: .Default, title: "View", handler: {(action,indexPath) -> Void in
             let comment =  self.myComments[indexPath.row]
             let url = "https://unoverflow.herokuapp.com/comments/"+String(comment.id)
             let URL = NSURL(string: url)
             let safariController = SFSafariViewController(URL: URL!)
             self.presentViewController(safariController, animated: true, completion: nil)
         })
-        let deletePost =  UITableViewRowAction(style: .Default, title: "Delete", handler: {(action,indexPath)-> Void in
+        let deleteComment =  UITableViewRowAction(style: .Default, title: "Delete", handler: {(action,indexPath)-> Void in
             let comment = self.myComments[indexPath.row]
             let url = NSURL(string: "https://unoverflow.herokuapp.com/api/v1/comments_api/"+String(comment.id))
             let request = NSMutableURLRequest(URL: url!,cachePolicy:.UseProtocolCachePolicy, timeoutInterval: 10.0)
@@ -136,9 +136,9 @@ class MyCommentsTableViewController: UITableViewController,UISearchResultsUpdati
             
             
         })
-        deletePost.backgroundColor = UIColor.redColor()
-        viewPost.backgroundColor = UIColor.blueColor()
-        return [viewPost,deletePost]
+        deleteComment.backgroundColor = UIColor.redColor()
+        viewComment.backgroundColor = UIColor.blueColor()
+        return [viewComment,deleteComment]
     }
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if searchController.active {
