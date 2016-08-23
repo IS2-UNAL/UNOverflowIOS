@@ -198,6 +198,23 @@ class TagsTableViewController: UITableViewController,UISearchResultsUpdating {
         }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "postsTag" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destinationViewController as! PostsTagTableViewController
+                if searchController.active{
+                    destinationController.posts = self.tagsSearch[indexPath.row].posts
+                }else{
+                    let key = tagTitles[indexPath.section]
+                    if let t = tagsDictionary[key]{
+                        destinationController.posts = t[indexPath.row].posts
+                    }
+                }
+            }
+        }
+    }
+
+    
 
     
 

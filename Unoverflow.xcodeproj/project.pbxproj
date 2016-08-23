@@ -26,6 +26,8 @@
 		B53688DD1D6B9561009F4C98 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688DC1D6B9561009F4C98 /* CommentTableViewCell.swift */; };
 		B53688DF1D6BBCA8009F4C98 /* TagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688DE1D6BBCA8009F4C98 /* TagTableViewCell.swift */; };
 		B53688E11D6BBCBC009F4C98 /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688E01D6BBCBC009F4C98 /* TagsTableViewController.swift */; };
+		B53688E41D6BD85C009F4C98 /* PostsTagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688E21D6BD85C009F4C98 /* PostsTagTableViewController.swift */; };
+		B53688E71D6BD870009F4C98 /* PostTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53688E61D6BD870009F4C98 /* PostTagTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		B53688DC1D6B9561009F4C98 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		B53688DE1D6BBCA8009F4C98 /* TagTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTableViewCell.swift; sourceTree = "<group>"; };
 		B53688E01D6BBCBC009F4C98 /* TagsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewController.swift; sourceTree = "<group>"; };
+		B53688E21D6BD85C009F4C98 /* PostsTagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTagTableViewController.swift; sourceTree = "<group>"; };
+		B53688E61D6BD870009F4C98 /* PostTagTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTagTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +126,8 @@
 				B53688DC1D6B9561009F4C98 /* CommentTableViewCell.swift */,
 				B53688DE1D6BBCA8009F4C98 /* TagTableViewCell.swift */,
 				B53688E01D6BBCBC009F4C98 /* TagsTableViewController.swift */,
+				B53688E21D6BD85C009F4C98 /* PostsTagTableViewController.swift */,
+				B53688E61D6BD870009F4C98 /* PostTagTableViewCell.swift */,
 			);
 			path = Unoverflow;
 			sourceTree = "<group>";
@@ -241,11 +247,13 @@
 				B53688D91D6B85CB009F4C98 /* PostTableViewCell.swift in Sources */,
 				B53688D71D6B85B7009F4C98 /* MyPostsTableViewController.swift in Sources */,
 				B53688CA1D6AB85F009F4C98 /* User.swift in Sources */,
+				B53688E71D6BD870009F4C98 /* PostTagTableViewCell.swift in Sources */,
 				B53688C81D6AAE70009F4C98 /* Utilities.swift in Sources */,
 				B53688CD1D6AB87C009F4C98 /* Tag.swift in Sources */,
 				B53688D51D6B5DE8009F4C98 /* ProfileTableViewCell.swift in Sources */,
 				B53688D11D6AB8A7009F4C98 /* Comment.swift in Sources */,
 				B53688CF1D6AB891009F4C98 /* Post.swift in Sources */,
+				B53688E41D6BD85C009F4C98 /* PostsTagTableViewController.swift in Sources */,
 				B53688DD1D6B9561009F4C98 /* CommentTableViewCell.swift in Sources */,
 				B53688AA1D6AA5A7009F4C98 /* ViewController.swift in Sources */,
 				B53688E11D6BBCBC009F4C98 /* TagsTableViewController.swift in Sources */,
