@@ -17,6 +17,31 @@ class Utilities{
         alertMessage.addAction(okAction)
         return alertMessage
     }
+    static func parseJSONToTags(json:NSDictionary) -> [Tag]{
+        var tagsTemp:[Tag] = []
+        let tags = json["tags_api"] as! [AnyObject]
+        for t in tags{
+            let _id = t["id"] as! Int
+            let _title = t["title"] as! String
+            let _description = t["description"] as! String
+            var _posts:[Post] = []
+            let postJSON = t["posts"] as! [AnyObject]
+            for p in postJSON{
+                let _idPost = p["id"] as! Int
+                let _titlePost = p["title"] as! String
+                let _descriptionPost = p["description"] as! String
+                let _createdAt = p["created_at"] as! String
+                let _updatedAt = p["updated_at"] as! String
+                let _owner = p["user_id"] as! Int
+                let post = Post(id: _idPost, title: _titlePost, description: _descriptionPost, createdAt: _createdAt, updatedAt: _updatedAt, owner: _owner)
+                _posts.append(post)
+            }
+            
+            let tag = Tag(id: _id, title: _title, description: _description, posts: _posts)
+            tagsTemp.append(tag)
+        }
+        return tagsTemp
+    }
     static func parseJSONToUser(json:NSDictionary) -> User?{
         let user = json["user"] as! NSDictionary
         let _id = user["id"] as! Int
